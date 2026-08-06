@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeuriGuard</title>
+    <link rel="icon" type="image/png" href="static/img/heuriguard-logo1.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+{% include "header_user.html" %}
+
+<div class="container">
+    <div class="home">
+        <h2>Abstract</h2><br>
+        <p>
+            In today’s digitally interconnected world, communication through SMS, email, and web links has become an essential part of everyday life. However, this rapid digital expansion has also led to a significant rise in cyber threats such as phishing attacks, spam messages, and malicious URLs, which pose serious risks to user privacy, financial security, and sensitive information. Attackers increasingly exploit these communication channels to deceive users into disclosing confidential data or accessing harmful content, highlighting the urgent need for intelligent and automated detection systems.
+
+This project presents HeuriGuard, a unified, web-based and mobile-enabled intelligent cybersecurity system designed to detect malicious content across SMS messages, emails, and URLs using machine learning techniques. Unlike traditional detection tools that focus on a single communication channel, the proposed system integrates multi-channel threat analysis within a single platform, providing a comprehensive security solution.
+
+The system employs supervised machine learning models, including Gradient Boosting and Naïve Bayes classifiers, trained on large labeled datasets containing both legitimate and malicious samples. For textual analysis, natural language processing techniques such as tokenization, TF-IDF vectorization, and feature extraction are applied. For URL detection, multiple lexical and structural features—such as URL length, domain characteristics, presence of suspicious symbols, and abnormal patterns—are analyzed to identify potential threats accurately.
+
+A fully functional web application and Android mobile application have been developed to ensure accessibility and real-time usability. The backend integrates data preprocessing, trained model inference, and instant result visualization, enabling users to input SMS text, email content, or URLs and receive immediate safety predictions.
+
+By combining machine learning intelligence with real-world deployment, HeuriGuard serves as a proactive cybersecurity solution that enhances digital communication safety. The system demonstrates how intelligent automation can significantly improve threat detection accuracy, increase user awareness, and strengthen protection against modern phishing and spam attacks in dynamic digital environments.
+        </p>
+    </div>
+</div>
+
+<footer class="dynamic-footer">
+    &copy; <span id="current-year"></span> MD JAVEED KHAN & TEAM. All rights reserved.
+</footer>
+
+<script>
+document.getElementById("current-year").textContent =
+    new Date().getFullYear();
+</script>
+
+</body>
+
+</html>
+

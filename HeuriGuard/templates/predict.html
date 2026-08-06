@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction | HeuriGuard</title>
+   <link href="{{ url_for('static', filename='css/style.css') }}"
+          rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/png" href="static/img/heuriguard-logo1.png">      
+</head>
+
+<body>
+
+{% include "header_user.html" %}
+
+<div class="container">
+    <div class="card">
+        <h2>Analyze Message</h2>
+
+        <textarea id="message"
+            placeholder="Enter or paste SMS, email text, or URL here"></textarea>
+
+        <button class="zoom-button" onclick="predict()">Analyze Message</button>
+
+        <div id="result"></div>
+    </div>
+</div>
+
+<footer class="dynamic-footer">
+    &copy; <span id="current-year"></span> MD JAVEED KHAN & TEAM. All rights reserved.
+</footer>
+
+<script>
+function predict() {
+    const msg = document.getElementById("message").value;
+
+    if (!msg.trim()) {
+        document.getElementById("result").innerText =
+            "⚠️ Please enter some text or a URL.";
+        return;
+    }
+
+    document.getElementById("result").innerText = "🔍 Analyzing...";
+
+    fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("result").innerText = data.result;
+    })
+    .catch(error => {
+        document.getElementById("result").innerText =
+            "❌ Error occurred while predicting.";
+        console.error(error);
+    });
+}
+
+document.getElementById("current-year").textContent =
+    new Date().getFullYear();
+</script>
+
+</body>
+</html>
