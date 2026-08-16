@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, render_template, request, jsonify
 import re
 import pickle
@@ -7,30 +8,43 @@ import socket
 import ssl
 import requests
 from urllib.parse import urlparse
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 
 # ---------------- INIT ----------------
 user_bp = Blueprint("user_bp", __name__)
 
-nltk.download("punkt")
-nltk.download("stopwords")
-nltk.download("wordnet")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Configure NLTK data dir to /tmp/nltk_data for writable filesystem on Vercel Serverless
+NLTK_DATA_DIR = os.path.join("/tmp", "nltk_data")
+os.makedirs(NLTK_DATA_DIR, exist_ok=True)
+if NLTK_DATA_DIR not in nltk.data.path:
+    nltk.data.path.append(NLTK_DATA_DIR)
+
+for resource in ["punkt", "punkt_tab", "stopwords", "wordnet"]:
+    try:
+        nltk.download(resource, download_dir=NLTK_DATA_DIR, quiet=True)
+    except Exception:
+        pass
+
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
 lemma = WordNetLemmatizer()
 
 # ---------------- LOAD MODELS ----------------
+MODEL_DIR = os.path.join(BASE_DIR, "model")
 
 # SMS SPAM MODEL
-with open("model/vectorizer.pkl", "rb") as f:
+with open(os.path.join(MODEL_DIR, "vectorizer.pkl"), "rb") as f:
     tfidf = pickle.load(f)
 
-with open("model/model.pkl", "rb") as f:
+with open(os.path.join(MODEL_DIR, "model.pkl"), "rb") as f:
     sms_model = pickle.load(f)
 
 # URL ML MODEL (YOUR GBC MODEL)
-with open("model/gbc_malicious.pkl", "rb") as f:
+with open(os.path.join(MODEL_DIR, "gbc_malicious.pkl"), "rb") as f:
     url_model = pickle.load(f)
+
 
 # ---------------- UTIL FUNCTIONS ----------------
 
