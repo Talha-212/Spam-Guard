@@ -37,21 +37,18 @@ def ensure_nltk_data():
 # ---------------- LOAD MODELS ----------------
 MODEL_DIR = os.path.join(BASE_DIR, "model")
 
-# SMS SPAM MODEL
-with open(os.path.join(MODEL_DIR, "vectorizer.pkl"), "rb") as f:
-    tfidf = pickle.load(f)
+def load_model(filename):
+    try:
+        with open(os.path.join(MODEL_DIR, filename), "rb") as f:
+            return pickle.load(f)
+    except (AttributeError, EOFError, ImportError, OSError, pickle.UnpicklingError,
+            TypeError, ValueError):
+        return None
 
-with open(os.path.join(MODEL_DIR, "model.pkl"), "rb") as f:
-    sms_model = pickle.load(f)
 
-# URL ML MODEL (YOUR GBC MODEL)
-try:
-    with open(os.path.join(MODEL_DIR, "gbc_malicious.pkl"), "rb") as f:
-        url_model = pickle.load(f)
-except (AttributeError, EOFError, ImportError, OSError, pickle.UnpicklingError,
-        TypeError, ValueError):
-    # The deployed scikit-learn version may not match the saved tree format.
-    url_model = None
+tfidf = load_model("vectorizer.pkl")
+sms_model = load_model("model.pkl")
+url_model = load_model("gbc_malicious.pkl")
 
 
 # ---------------- UTIL FUNCTIONS ----------------
@@ -268,6 +265,9 @@ def predict():
         return jsonify({"result": "✅ Legitimate URL (No text content to analyze)"})
 
     # STEP 4: SMS SPAM CHECK
+    if tfidf is None or sms_model is None:
+        return jsonify({"result": "⚠️ Spam model is temporarily unavailable; treat this message with caution"})
+
     processed_text = transform_text(cleaned_message)
     vector = tfidf.transform([processed_text])
     prediction = sms_model.predict(vector)[0]
