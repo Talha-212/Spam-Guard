@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="static/img/heuriguard-logo1.png" width="200">
+  <img src="static/img/SpamGuardlogo1.png" width="200">
 </p>
 
-**SpamGuard: A Hybrid Machine Learning System for Malicious URL Detection and SMS Spam Classification**
+**HeuriGuard: A Hybrid Machine Learning System for Malicious URL Detection and SMS Spam Classification**
 
-SpamGuard is an intelligent cybersecurity system designed to detect malicious URLs, phishing links, and SMS spam using a hybrid rule-based and machine learning approach.
+HeuriGuard is an intelligent cybersecurity system designed to detect malicious URLs, phishing links, and SMS spam using a hybrid rule-based and machine learning approach.
 
 The system integrates Natural Language Processing (NLP) and URL feature analysis to provide real-time threat detection across multiple communication channels.
 
@@ -75,7 +75,7 @@ The model was trained using labeled datasets and evaluated using standard machin
 ---
 
 # 🏗 System Architecture
-![SpamGuard Architecture](static/img/architecture.png)
+![HeuriGuard Architecture](static/img/architecture.png)
 
 The system follows a multi-stage pipeline:
 
@@ -89,7 +89,11 @@ The backend processes input data and returns real-time classification results to
 
 Web Application:
 
-https://spam-guard-gamma.vercel.app
+https://heuriguard.mdjaveedkhan.me
+
+Portfolio:
+
+https://mdjaveedkhan.me
 
 ---
 
@@ -128,5 +132,22 @@ This project is being extended for:
 
 ---
 
+# 👨‍💻 Author
+
+**MD JAVEED KHAN**
+
+Computer Science and Engineering Student  
+Machine Learning & AI Enthusiast
+
+Portfolio  
+https://mdjaveedkhan.me
+
+LinkedIn  
+https://linkedin.com/in/mdjaveedkhan
+
+Email  
+mdjaveed1802@gmail.com
+
+© 2026 Md Javeed Khan
 This project is for academic and research purposes.
 Unauthorized reproduction of the complete system is discouraged.
