@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">    
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback | Spam Guard</title>
-    <link rel="icon" type="image/png" href="static/img/spamguard-logo1.png">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback | Spam Guard</title>
+  <link rel="icon" type="image/png" href="static/img/spamguard-logo1.png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
+
 <body>
-    {% include "header_user.html" %}
-    <div class="container">
-        <div class="feedback">
-    <h2>Feedback Form</h2><br>
-    <p>We value your feedback! Please let us know your thoughts and suggestions to help us improve HeuriGuard.</p><br>
-    <center>
-        <form class ="feedback-form" name="google-sheet" autocomplete="off" method="post" style="align-items: left;">
-        <center><h3 >Your Feedback</h3></center><br>
-        <input type="text" name="name" placeholder="Enter your name "><br><br>
-        <input type="email" name="email" placeholder="Enter your email "><br><br>
-        <select name="department">
+  {% include "header_user.html" %}
+  <div class="container">
+    <div class="feedback">
+      <h2>Feedback Form</h2><br>
+      <p>We value your feedback! Please let us know your thoughts and suggestions to help us improve HeuriGuard.</p><br>
+      <center>
+        <form class="feedback-form" name="google-sheet" autocomplete="off" method="post" style="align-items: left;">
+          <center>
+            <h3>Your Feedback</h3>
+          </center><br>
+          <input type="text" name="name" placeholder="Enter your name "><br><br>
+          <input type="email" name="email" placeholder="Enter your email "><br><br>
+          <select name="department">
             <option value="Not Selected" disabled selected>Select your department</option>
             <option value="CSE">CSE</option>
             <option value="CSM">CSM</option>
@@ -28,122 +32,128 @@
             <option value="ECE">ECE</option>
             <option value="MECH">MECH</option>
             <option value="CIVIL">CIVIL</option>
-        </select><br><br>  
-        <select name="role">
+          </select><br><br>
+          <select name="role">
             <option value="Not Selected" disabled selected>Select your role</option>
             <option value="faculty">Faculty</option>
             <option value="student">Student</option>
-        </select><br><br>
-        <select name="rating">
+          </select><br><br>
+          <select name="rating">
             <option value="Not Selected" disabled selected>Rate your experience</option>
             <option value="1">1 - Very Poor</option>
             <option value="2">2 - Poor</option>
             <option value="3">3 - Average</option>
             <option value="4">4 - Good</option>
-            <option value="5">5 - Excellent</option> 
-        </select><br>
-        <textarea name="suggestions" placeholder="Any suggestions for improvement? "></textarea><br><br>
-        <button class="zoom-button" onclick="submitForm()" type="submit">Submit</button>
-        </form></center>
-    </div><hr>
-        <div class="contact">
-        <h2>Contact Us</h2><br>
-        <p>If you have any questions, suggestions, or would like to get in touch with us, please feel free to reach out through the following channels:</p><br>
-        <div class="contact-content">
-            <a href="mailto:spamguard@gmail.com" ><img src="static/img/gmail.png" alt="gmail" ><b>Email:</b>
-                    spamguard@gmail.com</a><br><br>
-        </div>
-        <p>We look forward to hearing from you!</p>
+            <option value="5">5 - Excellent</option>
+          </select><br>
+          <textarea name="suggestions" placeholder="Any suggestions for improvement? "></textarea><br><br>
+          <button class="zoom-button" onclick="submitForm()" type="submit">Submit</button>
+        </form>
+      </center>
+    </div>
+    <hr>
+    <div class="contact">
+      <h2>Contact Us</h2><br>
+      <p>If you have any questions, suggestions, or would like to get in touch with us, please feel free to reach out
+        through the following channels:</p><br>
+      <div class="contact-content">
+        <a href="mailto:spamguard@gmail.com"><img src="static/img/gmail.png" alt="gmail"><b>Email:</b>
+          spamguard@gmail.com</a><br><br>
+      </div>
+      <p>We look forward to hearing from you!</p>
 
     </div>
-    </div>
-    
-<script>
+  </div>
+
+  <footer class="dynamic-footer">
+    &copy; <span id="current-year"></span> HeuriGuard. All rights reserved.
+  </footer>
+  <script>
+
     // GOOGLE SCRIPT URL
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwY0upqsrDKOpMlu1FSRhYMteq2Qo8FVu-TY_Lp2ypaDWMqkJqIFmWdpOPnkGBf1l5wZA/exec'
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwY0upqsrDKOpMlu1FSRhYMteq2Qo8FVu-TY_Lp2ypaDWMqkJqIFmWdpOPnkGBf1l5wZA/exec'
 
-const form = document.forms['google-sheet']
-const submitButton = document.querySelector('.feedback-form button')
+    const form = document.forms['google-sheet']
+    const submitButton = document.querySelector('.feedback-form button')
 
-// EMAIL VALIDATION
-function validateEmail (email) {
-  return /^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(email)
-}
+    // EMAIL VALIDATION
+    function validateEmail(email) {
+      return /^[^ ]+@[^ ]+\.[a-z]{2,3}$/.test(email)
+    }
 
-// FORM SUBMIT
-form.addEventListener('submit', function (e) {
-  e.preventDefault()
+    // FORM SUBMIT
+    form.addEventListener('submit', function (e) {
+      e.preventDefault()
 
-  const name = form['name'].value.trim()
-  const email = form['email'].value.trim()
-  const department = form['department'].value
-  const role = form['role'].value
-  const rating = form['rating'].value
-  const suggestions = form['suggestions'].value.trim()
-  const numericRating = Number(rating)
+      const name = form['name'].value.trim()
+      const email = form['email'].value.trim()
+      const department = form['department'].value
+      const role = form['role'].value
+      const rating = form['rating'].value
+      const suggestions = form['suggestions'].value.trim()
+      const numericRating = Number(rating)
 
-  // REQUIRED CHECK
-  if (!name) {
-    alert('Please Enter Your name.')
-    return
-  }
-  if (!email) {
-    alert('Please Enter Your email.')
-    return
-  }
-  if (department === 'Not Selected') {
-    alert('Please Select your Department.')
-    return
-  }
-  if (role === 'Not Selected') {
-    alert('Please Select your Role( Student/Faculty )')
-    return
-  }
-  // 1. Check for the rating first (Logic: Can't evaluate a value if it hasn't been picked)
-  if (rating === 'Not Selected' || !rating) {
-    alert('Please give us your rating.')
-    return
-  }
+      // REQUIRED CHECK
+      if (!name) {
+        alert('Please Enter Your name.')
+        return
+      }
+      if (!email) {
+        alert('Please Enter Your email.')
+        return
+      }
+      if (department === 'Not Selected') {
+        alert('Please Select your Department.')
+        return
+      }
+      if (role === 'Not Selected') {
+        alert('Please Select your Role( Student/Faculty )')
+        return
+      }
+      // 1. Check for the rating first (Logic: Can't evaluate a value if it hasn't been picked)
+      if (rating === 'Not Selected' || !rating) {
+        alert('Please give us your rating.')
+        return
+      }
 
-  if (numericRating < 5 && !suggestions) {
-    alert('Please provide your suggestions to improve')
-    return
-  }
+      if (numericRating < 5 && !suggestions) {
+        alert('Please provide your suggestions to improve')
+        return
+      }
 
-  // EMAIL CHECK
-  if (!validateEmail(email)) {
-    alert('Enter valid email address.')
-    return
-  }
+      // EMAIL CHECK
+      if (!validateEmail(email)) {
+        alert('Enter valid email address.')
+        return
+      }
 
-  // BUTTON LOADING STATE
-  submitButton.innerText = 'Submitting...'
-  submitButton.disabled = true
+      // BUTTON LOADING STATE
+      submitButton.innerText = 'Submitting...'
+      submitButton.disabled = true
 
-  // SEND DATA
-  fetch(scriptURL, {
-    method: 'POST',
-    body: new FormData(form)
-  })
-    .then(res => res.json())
-    .then(data => {
-      alert('Thank you for your feedback!')
-      form.reset()
+      // SEND DATA
+      fetch(scriptURL, {
+        method: 'POST',
+        body: new FormData(form)
+      })
+        .then(res => res.json())
+        .then(data => {
+          alert('Thank you for your feedback!')
+          form.reset()
+        })
+        .catch(err => {
+          alert('Submission failed. Try again.')
+          console.error(err)
+        })
+        .finally(() => {
+          submitButton.innerText = 'Submit'
+          submitButton.disabled = false
+        })
     })
-    .catch(err => {
-      alert('Submission failed. Try again.')
-      console.error(err)
-    })
-    .finally(() => {
-      submitButton.innerText = 'Submit'
-      submitButton.disabled = false
-    })
-})
 
-// Footer year auto update
-document.getElementById("current-year").textContent = new Date().getFullYear();
-</script>
+    // Footer year auto update
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+  </script>
 </body>
+
 </html>
-
-
