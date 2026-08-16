@@ -14,22 +14,25 @@ user_bp = Blueprint("user_bp", __name__)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Configure NLTK data dir to /tmp/nltk_data for writable filesystem on Vercel Serverless
-NLTK_DATA_DIR = os.path.join("/tmp", "nltk_data")
-os.makedirs(NLTK_DATA_DIR, exist_ok=True)
-if NLTK_DATA_DIR not in nltk.data.path:
-    nltk.data.path.append(NLTK_DATA_DIR)
+# Lazy NLTK Loader
+_nltk_downloaded = False
 
-for resource in ["punkt", "punkt_tab", "stopwords", "wordnet"]:
-    try:
-        nltk.download(resource, download_dir=NLTK_DATA_DIR, quiet=True)
-    except Exception:
-        pass
-
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-
-lemma = WordNetLemmatizer()
+def ensure_nltk_data():
+    global _nltk_downloaded
+    if not _nltk_downloaded:
+        NLTK_DATA_DIR = os.path.join("/tmp", "nltk_data")
+        try:
+            os.makedirs(NLTK_DATA_DIR, exist_ok=True)
+            if NLTK_DATA_DIR not in nltk.data.path:
+                nltk.data.path.append(NLTK_DATA_DIR)
+            for resource in ["punkt", "punkt_tab", "stopwords", "wordnet"]:
+                try:
+                    nltk.download(resource, download_dir=NLTK_DATA_DIR, quiet=True)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+        _nltk_downloaded = True
 
 # ---------------- LOAD MODELS ----------------
 MODEL_DIR = os.path.join(BASE_DIR, "model")
@@ -50,11 +53,26 @@ with open(os.path.join(MODEL_DIR, "gbc_malicious.pkl"), "rb") as f:
 
 def transform_text(text):
     text = text.lower()
-    tokens = nltk.word_tokenize(text)
+    ensure_nltk_data()
+    try:
+        tokens = nltk.word_tokenize(text)
+    except Exception:
+        tokens = text.split()
     tokens = [t for t in tokens if t.isalnum()]
-    tokens = [t for t in tokens if t not in stopwords.words("english")]
-    tokens = [lemma.lemmatize(t) for t in tokens]
+    try:
+        from nltk.corpus import stopwords
+        stop_words = set(stopwords.words("english"))
+        tokens = [t for t in tokens if t not in stop_words]
+    except Exception:
+        pass
+    try:
+        from nltk.stem import WordNetLemmatizer
+        lemma = WordNetLemmatizer()
+        tokens = [lemma.lemmatize(t) for t in tokens]
+    except Exception:
+        pass
     return " ".join(tokens)
+
 
 def extract_urls(text):
     return re.findall(r"http[s]?://\S+", text.lower())
