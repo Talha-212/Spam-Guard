@@ -89,7 +89,7 @@ The backend processes input data and returns real-time classification results to
 
 Web Application:
 
-https://spam-guard-gamma.vercel.app
+https://spam-guard-plum.vercel.app/
 
 ---
 
