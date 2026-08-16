@@ -2,9 +2,9 @@
   <img src="static/img/SpamGuardlogo1.png" width="200">
 </p>
 
-**HeuriGuard: A Hybrid Machine Learning System for Malicious URL Detection and SMS Spam Classification**
+**Spam Guard: A Hybrid Machine Learning System for Malicious URL Detection and SMS Spam Classification**
 
-HeuriGuard is an intelligent cybersecurity system designed to detect malicious URLs, phishing links, and SMS spam using a hybrid rule-based and machine learning approach.
+Spam Guard is an intelligent cybersecurity system designed to detect malicious URLs, phishing links, and SMS spam using a hybrid rule-based and machine learning approach.
 
 The system integrates Natural Language Processing (NLP) and URL feature analysis to provide real-time threat detection across multiple communication channels.
 
@@ -14,7 +14,7 @@ The system integrates Natural Language Processing (NLP) and URL feature analysis
 
 With the rapid growth of digital communication, cyber threats such as phishing attacks, malicious URLs, and spam messages have become increasingly common.
 
-HeuriGuard addresses this challenge by combining machine learning models with rule-based analysis to detect harmful digital content efficiently.
+Spam Guard addresses this challenge by combining machine learning models with rule-based analysis to detect harmful digital content efficiently.
 
 The system supports detection of:
 
@@ -75,7 +75,7 @@ The model was trained using labeled datasets and evaluated using standard machin
 ---
 
 # 🏗 System Architecture
-![HeuriGuard Architecture](static/img/architecture.png)
+![Spam Guard Architecture](static/img/architecture.png)
 
 The system follows a multi-stage pipeline:
 
@@ -89,11 +89,7 @@ The backend processes input data and returns real-time classification results to
 
 Web Application:
 
-https://heuriguard.mdjaveedkhan.me
-
-Portfolio:
-
-https://mdjaveedkhan.me
+https://spam-guard-gamma.vercel.app
 
 ---
 
@@ -132,22 +128,5 @@ This project is being extended for:
 
 ---
 
-# 👨‍💻 Author
-
-**MD JAVEED KHAN**
-
-Computer Science and Engineering Student  
-Machine Learning & AI Enthusiast
-
-Portfolio  
-https://mdjaveedkhan.me
-
-LinkedIn  
-https://linkedin.com/in/mdjaveedkhan
-
-Email  
-mdjaveed1802@gmail.com
-
-© 2026 Md Javeed Khan
 This project is for academic and research purposes.
 Unauthorized reproduction of the complete system is discouraged.
