@@ -45,8 +45,13 @@ with open(os.path.join(MODEL_DIR, "model.pkl"), "rb") as f:
     sms_model = pickle.load(f)
 
 # URL ML MODEL (YOUR GBC MODEL)
-with open(os.path.join(MODEL_DIR, "gbc_malicious.pkl"), "rb") as f:
-    url_model = pickle.load(f)
+try:
+    with open(os.path.join(MODEL_DIR, "gbc_malicious.pkl"), "rb") as f:
+        url_model = pickle.load(f)
+except (AttributeError, EOFError, ImportError, OSError, pickle.UnpicklingError,
+        TypeError, ValueError):
+    # The deployed scikit-learn version may not match the saved tree format.
+    url_model = None
 
 
 # ---------------- UTIL FUNCTIONS ----------------
@@ -89,7 +94,7 @@ def extract_url_features(url):
         1 if re.search(r"\d+\.\d+\.\d+\.\d+", url) else 0,
         sum(c.isdigit() for c in url),
         sum(c.isalpha() for c in url),
-        1 if any(w in url for w in ["login","verify","secure","update","account"]) else 0
+        1 if any(w in url for w in ["login","verify","secure","update","account"])
     ]).reshape(1, -1)
 
 # --------- TRUSTED DOMAINS (WHITELIST) ---------
@@ -197,6 +202,9 @@ def predict_url_ml(url):
     if not redirects_to_https(url):
         return "warning", "Does not properly redirect to HTTPS"
 
+    if url_model is None:
+        return "warning", "URL model is temporarily unavailable; treat this link with caution"
+
     # STEP 3: FALLBACK TO YOUR GBC MODEL
     features = extract_url_features(url)
     pred = url_model.predict(features)[0]
@@ -278,5 +286,4 @@ def predict():
         })
 
     return jsonify({"result": "✅ Legitimate Message"})
-
 
